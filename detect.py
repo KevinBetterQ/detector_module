@@ -15,15 +15,12 @@ from sklearn.externals import joblib
 import os
 from detector_module.feature import make_features
 from detector_module.preprocess import data_preprocess
-
 from sys import argv
-
-
 MODEL_PATH = os.path.join(os.path.dirname(__file__), './model/')
 
 
 model_name = MODEL_PATH + "xgb_default_model"
-data = pd.read_csv('./sample/test_data.csv')
+data = pd.read_csv('./sample/train_data.csv')
 data['label'] = 0
 data_preprocess, data_preprocess_label = data_preprocess.preprocess_data(data)
 data_features, data_features_label = make_features.features_service(data_preprocess, data_preprocess_label)
@@ -40,6 +37,9 @@ y_pred = model.predict(data_df)
 y_temp = y_pred[0:200]
 y_temp[:] = 0
 y_pred = np.append(y_temp, y_pred)
-np.savetxt('./output/result.csv', y_pred)
+result = data[['timestamp', 'value', 'label']]
+result['label'] = y_pred
+result = result.loc[result['label'] == 1]
+result = result.drop(['label'], axis=1)
+result.to_csv('./output/result.csv', index=False)
 print("success")
-
