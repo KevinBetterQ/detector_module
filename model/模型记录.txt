@@ -1,0 +1,14 @@
+模型：xgb_model_835
+    耗时：2278 seconds = 38 分钟
+模型参数：
+XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
+       colsample_bytree=1, gamma=0, learning_rate=0.1, max_delta_step=0,
+       max_depth=3, min_child_weight=1, missing=None, n_estimators=100,
+       n_jobs=1, nthread=None, objective='binary:logistic', random_state=0,
+       reg_alpha=0, reg_lambda=1, scale_pos_weight=1, seed=None,
+       silent=True, subsample=1)
+模型评估：
+Accuracy: 0.984603461303
+F1 score: 0.835224709353
+Recall: 0.736985546301
+Precision: 0.963682229519

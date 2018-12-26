@@ -34,9 +34,11 @@ else:
 data = pd.read_csv(data_path)
 data_preprocess, data_preprocess_label = data_preprocess.preprocess_data(data)
 data_features, data_features_label = make_features.features_service(data_preprocess, data_preprocess_label)
-data_features_df = pd.DataFrame(data_features)
-data_features_label_df = pd.DataFrame(data_features_label)
-xgboosting.model_train(data_features_df, data_features_label_df)
+
+data_features_arr = np.array(data_features)
+data_features_label_arr = np.array(data_features_label)
+
+xgboosting.model_train(data_features_arr, data_features_label_arr)
 
 print(" train success !")
 
