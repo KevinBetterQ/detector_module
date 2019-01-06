@@ -4,7 +4,7 @@
 
 1. 读取数据 + 预处理
 2. 调用特征模块，制作特征 ===> 得到特征数据集
-3. 加载模型，进行异常检测
+3. 加载默认模型，进行异常检测
 
 created by qwk on December 17, 2018
 """
@@ -16,26 +16,49 @@ import os
 from detector_module.feature import make_features
 from detector_module.preprocess import data_preprocess
 from sys import argv
+
 MODEL_PATH = os.path.join(os.path.dirname(__file__), './model/')
+DATA_PATH_DEFAULT = "./sample/train_data.csv"
 
 
-model_name = MODEL_PATH + "xgb_model_835"
-data = pd.read_csv('./sample/train_data.csv')
-data['label'] = 0
-data_preprocess, data_preprocess_label = data_preprocess.preprocess_data(data)
-data_features, data_features_label = make_features.features_service(data_preprocess, data_preprocess_label)
-model = joblib.load(model_name)
+if __name__ == "__main__":
+    """
+    运行程序有2个参数：
+    @:param data_path 要检测数据文件的路径，绝对路径
+    @:param model_name 提供可选择模型，输入模型名称
+    """
 
-data_features_arr = np.array(data_features)
-data_features_label_arr = np.array(data_features_label)
+    # 1、参数获取：数据文件地址 和 模型名称
+    if len(argv) == 1:
+        data_path = DATA_PATH_DEFAULT
+        model_name = MODEL_PATH + "xgb_model_835"
+    else:
+        data_path = argv[1]
+        model_name = MODEL_PATH + argv[2]
 
-y_pred = model.predict(data_features_arr)
-y_temp = y_pred[0:200]
-y_temp[:] = 0
-y_pred = np.append(y_temp, y_pred)
-result = data[['timestamp', 'value', 'label']]
-result['label'] = y_pred
-result = result.loc[result['label'] == 1]
-result = result.drop(['label'], axis=1)
-result.to_csv('./output/result.csv', index=False)
-print("success")
+    # 2、读取文件
+    data = pd.read_csv(data_path)
+    data['label'] = 0
+    # 3、数据预处理 + 特征提取
+    data_preprocess, data_preprocess_label = data_preprocess.preprocess_data(data)
+    data_features, data_features_label = make_features.features_service(data_preprocess, data_preprocess_label)
+    # 4、加载模型
+    model = joblib.load(model_name)
+    # 5、检测
+    data_features_arr = np.array(data_features)  # 将特征格式转化为 narray 格式，以便带入模型
+    data_features_label_arr = np.array(data_features_label)
+    y_pred = model.predict(data_features_arr)  # 异常检测
+    # 6、检测结果处理
+    # 由于窗口设置问题，前200个数据是没有检测结果的，所以统一设为 0，补充在检测结果中
+    y_temp = y_pred[0:200]
+    y_temp[:] = 0
+    y_pred = np.append(y_temp, y_pred)
+    # 仅输出异常的时间数据，所以对检测结果进行筛选导成文件输出
+    result = data[['timestamp', 'value', 'label']]
+    result['label'] = y_pred
+    result = result.loc[result['label'] == 1]
+    result = result.drop(['label'], axis=1)
+    result.to_csv('./output/result.csv', index=False)
+    print("success")
+
+

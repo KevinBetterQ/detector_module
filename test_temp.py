@@ -11,3 +11,9 @@ def make_data():
     train_data = data.drop(['label'], axis=1)
     train_data.to_csv('sample/train_data.csv', index=False)
     train_label.to_csv('sample/train_label.csv', index=False)
+
+
+# program entry
+if __name__ == "__main__":
+    print("hello world")
+

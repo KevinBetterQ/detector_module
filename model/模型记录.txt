@@ -1,5 +1,6 @@
-模型：xgb_model_835
-    耗时：2278 seconds = 38 分钟
+1、模型：xgb_model_835
+训练所有数据得到
+耗时：2278 seconds = 38 分钟
 模型参数：
 XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
        colsample_bytree=1, gamma=0, learning_rate=0.1, max_delta_step=0,
@@ -12,3 +13,7 @@ Accuracy: 0.984603461303
 F1 score: 0.835224709353
 Recall: 0.736985546301
 Precision: 0.963682229519
+
+2、模型：xgb_default_model
+训练同一个id数据得到，针对单一KPI
+耗时：很短

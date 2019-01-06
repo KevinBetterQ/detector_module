@@ -38,6 +38,6 @@ def model_train(xtrain, ytrain):
     print('\n confussion matrix:\n', confusion_matrix(y_test, y_pred))
 
     # 保存模型
-    model_name = "./model/" + "xgb_model"
+    model_name = "./model/" + "xgb_model_test"
     joblib.dump(cls, model_name)
 
