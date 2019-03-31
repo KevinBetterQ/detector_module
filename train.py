@@ -13,10 +13,10 @@ Created by qwk on December 19, 2018
 
 import pandas as pd
 import numpy as np
-from detector_module.feature import make_features
-from detector_module.preprocess import data_preprocess
+from feature import make_features
+from preprocess import data_preprocess
 from sys import argv
-from detector_module.algorithm import model_select
+from algorithm import model_select
 
 MODEL_DEFAULT = "xgb"
 DATA_PATH_DEFAULT = "./sample/train_sameid.csv"

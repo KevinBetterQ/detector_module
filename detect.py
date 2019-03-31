@@ -13,9 +13,11 @@ import pandas as pd
 import numpy as np
 from sklearn.externals import joblib
 import os
-from detector_module.feature import make_features
-from detector_module.preprocess import data_preprocess
+from feature import make_features
+from preprocess import data_preprocess
 from sys import argv
+import matplotlib.pyplot as plt
+from matplotlib.dates import AutoDateLocator, DateFormatter
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), './model/')
 DATA_PATH_DEFAULT = "./sample/train_data.csv"
@@ -38,6 +40,7 @@ if __name__ == "__main__":
 
     # 2、读取文件
     data = pd.read_csv(data_path)
+    data = data[0:10000]
     data['label'] = 0
     # 3、数据预处理 + 特征提取
     data_preprocess, data_preprocess_label = data_preprocess.preprocess_data(data)
@@ -56,9 +59,22 @@ if __name__ == "__main__":
     # 仅输出异常的时间数据，所以对检测结果进行筛选导成文件输出
     result = data[['timestamp', 'value', 'label']]
     result['label'] = y_pred
-    result = result.loc[result['label'] == 1]
-    result = result.drop(['label'], axis=1)
-    result.to_csv('./output/result.csv', index=False)
-    print("success")
+    res_ab = result.loc[result['label'] == 1]
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    plt.plot(result['timestamp'], result['value'])
+    plt.scatter(res_ab['timestamp'], res_ab['value'], color='red')
+    plt.xlabel('timestamp')
+    plt.ylabel('value')
+
+    imgName = 'res_xgb.png'
+    imgPath = './output/'
+    plt.savefig(imgPath + imgName)
+    plt.show()
+
+    result.to_csv("./output/result.csv", index=0)
+
+    print(imgPath + imgName + "successful")
 
 

@@ -5,7 +5,7 @@
 
 Created by qwk on January 06, 2019
 """
-from detector_module.algorithm import xgboosting
+from algorithm import xgboosting
 
 
 def model_train(model_name, data_features_arr, data_features_label_arr):
