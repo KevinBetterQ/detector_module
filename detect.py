@@ -33,7 +33,7 @@ if __name__ == "__main__":
     # 1、参数获取：数据文件地址 和 模型名称
     if len(argv) == 1:
         data_path = DATA_PATH_DEFAULT
-        model_name = MODEL_PATH + "xgb_model_835"
+        model_name = MODEL_PATH + "xgb"
     else:
         data_path = argv[1]
         model_name = MODEL_PATH + argv[2]

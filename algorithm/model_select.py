@@ -6,7 +6,7 @@
 Created by qwk on January 06, 2019
 """
 from algorithm import xgboosting
-
+from algorithm import lg, svm
 
 def model_train(model_name, data_features_arr, data_features_label_arr):
     """
@@ -18,7 +18,9 @@ def model_train(model_name, data_features_arr, data_features_label_arr):
     if model_name == 'xgb':
         xgboosting.model_train(data_features_arr, data_features_label_arr)
     elif model_name == 'lg':
-        print("none")
+        lg.model_train(data_features_arr, data_features_label_arr)
+    elif model_name == 'svm':
+        svm.model_train(data_features_arr, data_features_label_arr)
     else:
         print("error")
 
